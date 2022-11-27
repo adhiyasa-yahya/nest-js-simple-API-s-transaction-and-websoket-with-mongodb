@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AccountsModule } from './accounts/accounts.module';
 import { TransactionsModule } from './transactions/transactions.module';
+import { GatewayModule } from './gateway/gateway.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { TransactionsModule } from './transactions/transactions.module';
     ),
     AccountsModule,
     TransactionsModule,
+    GatewayModule,
   ],
   controllers: [AppController],
   providers: [AppService],

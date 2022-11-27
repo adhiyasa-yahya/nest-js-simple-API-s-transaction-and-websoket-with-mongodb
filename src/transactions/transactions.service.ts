@@ -2,17 +2,21 @@ import { Injectable } from '@nestjs/common';
 import { Transaction, TsDocument } from './schemas/transaction.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+import { GatewayGateway } from '../gateway/gateway.gateway';
 
 @Injectable()
 export class TransactionsService {
   constructor(
     @InjectModel('transaction')
     private readonly tsModel: Model<TsDocument>,
+    private readonly socketGateway: GatewayGateway,
   ) {}
 
   async createTransaction(acc: Transaction): Promise<Transaction> {
     const new_tr = new this.tsModel(acc);
-    return new_tr.save();
+    const result = new_tr.save();
+    this.socketGateway.server.of('sender').emit('transaction', 'success');
+    return result;
   }
 
   // get balance
