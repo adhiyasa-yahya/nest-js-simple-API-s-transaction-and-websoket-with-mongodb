@@ -1,0 +1,201 @@
+{
+	"info": {
+		"_postman_id": "8e6a00e1-6766-4e0f-9c41-f69106ed5de0",
+		"name": "bank transaction",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "transaction",
+			"item": [
+				{
+					"name": "get history",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept-Charset",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}trs/get-history/{{userID}}",
+							"host": [
+								"{{base_url}}trs"
+							],
+							"path": [
+								"get-history",
+								"{{userID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get balance",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}trs/get-balance/{{userID}}",
+							"host": [
+								"{{base_url}}trs"
+							],
+							"path": [
+								"get-balance",
+								"{{userID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "topup balance",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"account_id\": \"{{userID}}\",\r\n  \"credit\": 700, \r\n  \"debit\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}trs/transaction",
+							"host": [
+								"{{base_url}}trs"
+							],
+							"path": [
+								"transaction"
+							]
+						},
+						"description": "this end point to handle 2 transactoin for topup balance and checkout transaction. "
+					},
+					"response": []
+				},
+				{
+					"name": "checkout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"account_id\": \"{{userID}}\",\r\n  \"credit\": 0,\r\n  \"debit\": 205\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}trs/transaction",
+							"host": [
+								"{{base_url}}trs"
+							],
+							"path": [
+								"transaction"
+							]
+						},
+						"description": "this end point to handle 2 transactoin for topup balance and checkout transaction. "
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "account",
+			"item": [
+				{
+					"name": "reqister",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"username\", jsonData.name);\r",
+									"postman.setEnvironmentVariable(\"usermail\", jsonData.email);\r",
+									"postman.setEnvironmentVariable(\"userID\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"name\"  : \"{{$randomFirstName}}\",\r\n    \"email\" : \"{{$randomExampleEmail}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}accounts/register",
+							"host": [
+								"{{base_url}}accounts"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"token\", jsonData.token);\r",
+									"postman.setEnvironmentVariable(\"username\", jsonData._doc.name);\r",
+									"postman.setEnvironmentVariable(\"usermail\", jsonData._doc.email);\r",
+									"postman.setEnvironmentVariable(\"userID\", jsonData._doc._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\"  : \"{{username}}\",\r\n    \"email\" : \"{{usermail}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}accounts/login",
+							"host": [
+								"{{base_url}}accounts"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
