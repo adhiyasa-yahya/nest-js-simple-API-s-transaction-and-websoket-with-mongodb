@@ -1,10 +1,18 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AccountModule } from './account/account.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { AccountsModule } from './accounts/accounts.module';
+import { TransactionsModule } from './transactions/transactions.module';
 
 @Module({
-  imports: [AccountModule],
+  imports: [
+    MongooseModule.forRoot(
+      'mongodb+srv://hoho:eFZachRiBFJtJfVn@clusterjobtest.myqcadl.mongodb.net/?retryWrites=true&w=majority',
+    ),
+    AccountsModule,
+    TransactionsModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
